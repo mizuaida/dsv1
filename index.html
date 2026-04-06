@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixelhaus — Navigating the digital landscape</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #b8ff3f;
+    --black: #0d0d0d;
+    --dark: #111111;
+    --card-dark: #181818;
+    --white: #f5f5f0;
+    --grey: #888;
+    --border: #2a2a2a;
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(245,245,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 20px;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--green); background: var(--black); padding: 2px 6px; border-radius: 4px; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--black); font-size: 14px; font-weight: 500; opacity: 0.75; transition: opacity .2s; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    background: var(--black); color: var(--white);
+    border: none; padding: 12px 24px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background .2s, transform .1s;
+  }
+  .nav-cta:hover { background: var(--green); color: var(--black); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 100px 48px 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .hero-left { position: relative; }
+  .hero-tag {
+    display: inline-block; background: var(--green); color: var(--black);
+    font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 28px; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 5vw, 62px);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  .hero p {
+    font-size: 16px; line-height: 1.7; color: #555;
+    max-width: 420px; margin-bottom: 36px;
+  }
+  .hero-btns { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--black); color: var(--white);
+    border: none; padding: 16px 32px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-primary:hover { background: var(--green); color: var(--black); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: var(--black);
+    border: 1.5px solid rgba(0,0,0,0.2); padding: 16px 28px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-ghost:hover { border-color: var(--black); }
+  .hero-visual {
+    position: relative; display: flex; justify-content: center; align-items: center;
+    height: 420px;
+  }
+  .hero-blob {
+    width: 320px; height: 320px; border-radius: 50%;
+    background: var(--green);
+    position: absolute; filter: blur(0px);
+    animation: blobPulse 4s ease-in-out infinite;
+  }
+  @keyframes blobPulse { 0%,100%{transform:scale(1) rotate(0deg)} 50%{transform:scale(1.05) rotate(8deg)} }
+  .hero-card {
+    position: absolute;
+    background: var(--black); color: var(--white);
+    border-radius: 16px; padding: 18px 22px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  .hero-card.c1 { top: 40px; left: 10px; width: 160px; }
+  .hero-card.c2 { bottom: 40px; right: 0; width: 180px; background: var(--white); color: var(--black); border: 1px solid #e0e0e0; }
+  .hero-card .num { font-family: 'Syne',sans-serif; font-size: 28px; font-weight: 800; color: var(--green); }
+  .hero-card.c2 .num { color: var(--black); }
+  .hero-card .label { font-size: 11px; opacity: 0.7; margin-top: 2px; }
+
+  /* ── BRANDS ── */
+  .brands {
+    padding: 40px 48px;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    overflow: hidden;
+  }
+  .brands-inner { display: flex; align-items: center; gap: 16px; }
+  .brands-label { font-size: 13px; color: #999; white-space: nowrap; font-weight: 500; }
+  .brands-track { display: flex; gap: 40px; align-items: center; animation: scroll 20s linear infinite; }
+  @keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .brand-name {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px;
+    opacity: 0.3; white-space: nowrap; letter-spacing: -0.5px;
+    transition: opacity .2s;
+  }
+  .brand-name:hover { opacity: 0.7; }
+
+  /* ── SECTION HEADINGS ── */
+  .section-tag {
+    display: inline-block; font-size: 12px; font-weight: 600;
+    color: #999; letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px;
+  }
+
+  /* ── SERVICES ── */
+  .services {
+    padding: 80px 48px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .services-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 20px; }
+  .services-head p { max-width: 320px; color: #666; font-size: 15px; line-height: 1.6; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card {
+    border-radius: var(--radius);
+    padding: 30px;
+    position: relative; overflow: hidden;
+    transition: transform .25s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card.dark { background: var(--black); color: var(--white); }
+  .card.light { background: #f0f0ec; color: var(--black); border: 1px solid #e0e0e0; }
+  .card.green { background: var(--green); color: var(--black); }
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 20px;
+  }
+  .card.dark .card-icon { background: #222; }
+  .card.light .card-icon { background: #fff; }
+  .card.green .card-icon { background: rgba(0,0,0,0.15); }
+  .card h3 { font-family: 'Syne',sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .card p { font-size: 14px; line-height: 1.6; opacity: 0.7; }
+  .card-arrow {
+    position: absolute; bottom: 24px; right: 24px;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+  .card.dark .card-arrow { background: #222; color: var(--white); }
+  .card.light .card-arrow { background: var(--black); color: var(--white); }
+  .card.green .card-arrow { background: var(--black); color: var(--white); }
+
+  /* ── ABOUT / BIG FEATURE ── */
+  .about-section {
+    background: var(--black); color: var(--white);
+    padding: 80px 48px;
+  }
+  .about-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  }
+  .about-left .section-title { color: var(--white); }
+  .about-left p { color: #aaa; font-size: 15px; line-height: 1.7; margin-top: 20px; max-width: 440px; }
+  .stats-row { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+  .stat .num { font-family: 'Syne',sans-serif; font-size: 40px; font-weight: 800; color: var(--green); line-height: 1; }
+  .stat .lbl { font-size: 13px; color: #777; margin-top: 4px; }
+  .about-right { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .about-card {
+    background: #1a1a1a;
+    border-radius: 14px; padding: 24px;
+    border: 1px solid #2a2a2a;
+  }
+  .about-card.accent { background: var(--green); color: var(--black); border-color: var(--green); }
+  .about-card .ico { font-size: 28px; margin-bottom: 12px; }
+  .about-card h4 { font-family: 'Syne',sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .about-card p { font-size: 13px; line-height: 1.6; opacity: 0.7; }
+  .about-card.accent p { opacity: 0.8; }
+
+  /* ── PROCESS ── */
+  .process-section {
+    padding: 80px 48px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .process-head { margin-bottom: 40px; }
+  .process-accordion { display: flex; flex-direction: column; gap: 0; }
+  .accordion-item {
+    border-bottom: 1px solid #e0e0e0;
+    overflow: hidden;
+  }
+  .accordion-item:first-of-type { border-top: 1px solid #e0e0e0; }
+  .accordion-header {
+    display: flex; align-items: center; gap: 20px;
+    padding: 22px 0;
+    cursor: pointer; transition: all .2s;
+    user-select: none;
+  }
+  .accordion-header:hover { padding-left: 8px; }
+  .acc-num {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+    color: #bbb; width: 28px; flex-shrink: 0;
+  }
+  .acc-title { font-family: 'Syne',sans-serif; font-size: 17px; font-weight: 700; flex: 1; letter-spacing: -0.3px; }
+  .acc-toggle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #f0f0ec;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; transition: all .3s; flex-shrink: 0;
+  }
+  .accordion-item.open .acc-toggle { background: var(--green); transform: rotate(45deg); }
+  .accordion-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height .4s ease, padding .3s;
+    padding: 0 48px;
+  }
+  .accordion-item.open .accordion-body {
+    max-height: 200px;
+    padding: 0 48px 22px;
+  }
+  .accordion-body p { font-size: 14px; color: #666; line-height: 1.7; }
+
+  /* ── TEAM ── */
+  .team-section {
+    padding: 80px 48px;
+    background: #f8f8f4;
+  }
+  .team-inner { max-width: 1200px; margin: 0 auto; }
+  .team-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 44px; flex-wrap: wrap; gap: 20px; }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .team-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .team-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+  .team-avatar {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+    position: relative;
+  }
+  .team-card:nth-child(1) .team-avatar { background: #e8f5da; }
+  .team-card:nth-child(2) .team-avatar { background: #daeaf5; }
+  .team-card:nth-child(3) .team-avatar { background: #f5e8da; }
+  .team-card:nth-child(4) .team-avatar { background: #e8daf5; }
+  .team-info { padding: 18px 20px; }
+  .team-info h4 { font-family: 'Syne',sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .team-info span { font-size: 13px; color: #888; }
+  .team-socials { display: flex; gap: 10px; margin-top: 14px; }
+  .social-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: #f0f0ec; border: 1px solid #e0e0e0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; cursor: pointer; transition: all .2s;
+  }
+  .social-btn:hover { background: var(--green); border-color: var(--green); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials {
+    padding: 80px 48px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .testi-head { text-align: center; margin-bottom: 50px; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .testi-card {
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+  }
+  .testi-card.dark { background: var(--black); color: var(--white); }
+  .testi-card.light { background: #f0f0ec; color: var(--black); border: 1px solid #e0e0e0; }
+  .testi-card.green { background: var(--green); color: var(--black); }
+  .stars { font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+  .testi-card.dark .stars { color: var(--green); }
+  .testi-card.light .stars { color: var(--black); }
+  .testi-card.green .stars { color: var(--black); }
+  .testi-text { font-size: 15px; line-height: 1.7; margin-bottom: 24px; opacity: 0.85; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .testi-card.dark .testi-avatar { background: #222; }
+  .testi-card.light .testi-avatar { background: #fff; }
+  .testi-card.green .testi-avatar { background: rgba(0,0,0,0.15); }
+  .testi-name { font-family: 'Syne',sans-serif; font-size: 14px; font-weight: 700; }
+  .testi-role { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    background: var(--black); color: var(--white);
+    padding: 80px 48px;
+  }
+  .contact-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+  .contact-left .section-title { color: var(--white); margin-bottom: 20px; }
+  .contact-left p { color: #888; font-size: 15px; line-height: 1.7; margin-bottom: 32px; }
+  .contact-info { display: flex; flex-direction: column; gap: 16px; }
+  .contact-row { display: flex; align-items: center; gap: 14px; }
+  .contact-icon { font-size: 20px; }
+  .contact-row span { font-size: 14px; color: #aaa; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 13px; color: #777; margin-bottom: 8px; font-weight: 500; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px; padding: 14px 16px;
+    color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color .2s; resize: none;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--green);
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: #444; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .btn-submit {
+    width: 100%; background: var(--green); color: var(--black);
+    border: none; padding: 16px; border-radius: 100px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all .2s; margin-top: 8px;
+  }
+  .btn-submit:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black); color: var(--white);
+    padding: 40px 48px;
+    border-top: 1px solid #1e1e1e;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  }
+  .footer-links { display: flex; gap: 28px; }
+  .footer-links a { text-decoration: none; color: #666; font-size: 13px; transition: color .2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-copy { font-size: 13px; color: #444; }
+  .footer-star {
+    width: 48px; height: 48px;
+    background: var(--green);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { animation: fadeUp .7s ease both; }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .3s; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero, .about-inner, .contact-inner { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .hero { padding-top: 60px; }
+    .hero-visual { display: none; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .services, .process-section, .testimonials { padding: 60px 24px; }
+    .team-section { padding: 60px 24px; }
+    .about-section, .contact-section { padding: 60px 24px; }
+    .brands { padding: 30px 24px; }
+    footer { padding: 30px 24px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .about-right { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media(max-width:600px){
+    .cards-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .stats-row { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span>Pixel</span>haus</div>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Process</a></li>
+    <li><a href="#">Team</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Get Started →</button>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-left fade-up">
+      <span class="hero-tag">✦ Digital Agency</span>
+      <h1>Navigating the digital landscape for success</h1>
+      <p>We craft bold digital experiences — from strategy to execution — that position your brand at the forefront of your industry.</p>
+      <div class="hero-btns">
+        <button class="btn-primary">Get Started</button>
+        <button class="btn-ghost">View Our Work →</button>
+      </div>
+    </div>
+    <div class="hero-visual fade-up delay-2">
+      <div class="hero-blob"></div>
+      <div class="hero-card c1">
+        <div class="num">200+</div>
+        <div class="label">Projects Delivered</div>
+      </div>
+      <div class="hero-card c2">
+        <div class="num">98%</div>
+        <div class="label" style="color:#555;">Client Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<div class="brands">
+  <div class="brands-inner">
+    <span class="brands-label">Trusted by</span>
+    <div style="overflow:hidden;flex:1">
+      <div class="brands-track">
+        <span class="brand-name">Amazon</span>
+        <span class="brand-name">Spotify</span>
+        <span class="brand-name">Notion</span>
+        <span class="brand-name">Stripe</span>
+        <span class="brand-name">Netflix</span>
+        <span class="brand-name">Figma</span>
+        <span class="brand-name">Vercel</span>
+        <span class="brand-name">Linear</span>
+        <!-- duplicate for seamless scroll -->
+        <span class="brand-name">Amazon</span>
+        <span class="brand-name">Spotify</span>
+        <span class="brand-name">Notion</span>
+        <span class="brand-name">Stripe</span>
+        <span class="brand-name">Netflix</span>
+        <span class="brand-name">Figma</span>
+        <span class="brand-name">Vercel</span>
+        <span class="brand-name">Linear</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="services-head">
+    <div>
+      <span class="section-tag">✦ What We Do</span>
+      <h2 class="section-title">Services built for<br>modern brands</h2>
+    </div>
+    <p>From early-stage startups to enterprise brands, we deliver digital experiences that drive results and stand out.</p>
+  </div>
+  <div class="cards-grid">
+    <div class="card dark">
+      <div class="card-icon">🎨</div>
+      <h3>Brand Strategy</h3>
+      <p>Building identities that resonate and remain memorable across all touchpoints.</p>
+      <div class="card-arrow">→</div>
+    </div>
+    <div class="card green">
+      <div class="card-icon">💻</div>
+      <h3>Web Development</h3>
+      <p>Fast, scalable, and beautifully engineered websites and web applications.</p>
+      <div class="card-arrow">→</div>
+    </div>
+    <div class="card light">
+      <div class="card-icon">📱</div>
+      <h3>UI/UX Design</h3>
+      <p>Human-centered design systems that delight users and convert visitors.</p>
+      <div class="card-arrow">→</div>
+    </div>
+    <div class="card light">
+      <div class="card-icon">📊</div>
+      <h3>Digital Marketing</h3>
+      <p>Data-driven campaigns that grow your reach and revenue consistently.</p>
+      <div class="card-arrow">→</div>
+    </div>
+    <div class="card dark">
+      <div class="card-icon">⚡</div>
+      <h3>SEO & Analytics</h3>
+      <p>Increase organic visibility with technical SEO, content strategy, and reporting.</p>
+      <div class="card-arrow">→</div>
+    </div>
+    <div class="card green">
+      <div class="card-icon">🤖</div>
+      <h3>AI Integration</h3>
+      <p>Embed intelligent automation and AI features into your products and workflows.</p>
+      <div class="card-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="about-left">
+      <span class="section-tag" style="color:#555;">✦ About Us</span>
+      <h2 class="section-title">Let us be<br>your digital<br>partner</h2>
+      <p>We are a team of designers, developers, and strategists who believe that great digital products change how people experience the world.</p>
+      <div class="stats-row">
+        <div class="stat"><div class="num">8+</div><div class="lbl">Years Experience</div></div>
+        <div class="stat"><div class="num">200+</div><div class="lbl">Projects Done</div></div>
+        <div class="stat"><div class="num">50+</div><div class="lbl">Happy Clients</div></div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="about-card accent">
+        <div class="ico">🏆</div>
+        <h4>Award Winning</h4>
+        <p>Recognised globally for design and digital innovation.</p>
+      </div>
+      <div class="about-card">
+        <div class="ico" style="color:var(--green)">🚀</div>
+        <h4>Fast Delivery</h4>
+        <p style="color:#777">We ship on time, every time — without compromising quality.</p>
+      </div>
+      <div class="about-card">
+        <div class="ico" style="color:var(--green)">🎯</div>
+        <h4>Goal Oriented</h4>
+        <p style="color:#777">Strategy first, creativity second — we align on outcomes.</p>
+      </div>
+      <div class="about-card">
+        <div class="ico" style="color:var(--green)">💡</div>
+        <h4>Innovative</h4>
+        <p style="color:#777">Always exploring the cutting edge of tech and design.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="process-head">
+    <span class="section-tag">✦ How We Work</span>
+    <h2 class="section-title">Our Working Process</h2>
+  </div>
+  <div class="process-accordion">
+
+    <div class="accordion-item open">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        <span class="acc-num">01</span>
+        <span class="acc-title">Discovery & Strategy Development</span>
+        <span class="acc-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>We start with deep discovery sessions — understanding your business, audience, and goals. This forms the strategic foundation for everything we build together.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        <span class="acc-num">02</span>
+        <span class="acc-title">Research & Ideation</span>
+        <span class="acc-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>We research your market, competitors, and users to generate insights that fuel creative and strategic ideation across all channels.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        <span class="acc-num">03</span>
+        <span class="acc-title">Design & Content Optimization</span>
+        <span class="acc-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>Our design team crafts pixel-perfect interfaces and compelling content that communicates your brand story with clarity and impact.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        <span class="acc-num">04</span>
+        <span class="acc-title">Campaign Execution & Delivery</span>
+        <span class="acc-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>We execute with precision across all platforms, ensuring on-time delivery and seamless integration with your existing systems.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        <span class="acc-num">05</span>
+        <span class="acc-title">Analytics & Performance Review</span>
+        <span class="acc-toggle">+</span>
+      </div>
+      <div class="accordion-body">
+        <p>After launch, we monitor, measure, and iterate — turning data into decisions that keep your digital presence growing.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="team-inner">
+    <div class="team-head">
+      <div>
+        <span class="section-tag">✦ Our People</span>
+        <h2 class="section-title">Meet the Team</h2>
+      </div>
+      <button class="btn-ghost" style="font-size:14px;padding:12px 22px">View All →</button>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👩‍💻</div>
+        <div class="team-info">
+          <h4>Sara Chen</h4>
+          <span>Creative Director</span>
+          <div class="team-socials">
+            <div class="social-btn">𝕏</div>
+            <div class="social-btn">in</div>
+            <div class="social-btn">🌐</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨‍🎨</div>
+        <div class="team-info">
+          <h4>Marcus Webb</h4>
+          <span>Lead Designer</span>
+          <div class="team-socials">
+            <div class="social-btn">𝕏</div>
+            <div class="social-btn">in</div>
+            <div class="social-btn">🌐</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩‍🔬</div>
+        <div class="team-info">
+          <h4>Priya Nair</h4>
+          <span>Head of Strategy</span>
+          <div class="team-socials">
+            <div class="social-btn">𝕏</div>
+            <div class="social-btn">in</div>
+            <div class="social-btn">🌐</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👨‍💼</div>
+        <div class="team-info">
+          <h4>Leo Andersen</h4>
+          <span>Tech Lead</span>
+          <div class="team-socials">
+            <div class="social-btn">𝕏</div>
+            <div class="social-btn">in</div>
+            <div class="social-btn">🌐</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testi-head">
+    <span class="section-tag">✦ Client Love</span>
+    <h2 class="section-title">What our clients say</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card dark">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Pixelhaus completely transformed our brand identity. The team understood our vision immediately and delivered beyond expectations."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">😊</div>
+        <div>
+          <div class="testi-name">Alex Moreau</div>
+          <div class="testi-role">CEO, TechVentures</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card green">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"The web platform they built for us increased our conversions by 3x. Incredible attention to detail and user experience."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">🙂</div>
+        <div>
+          <div class="testi-name">Jamie Liu</div>
+          <div class="testi-role">Founder, GrowthLab</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card light">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Professional, responsive, and genuinely creative. Pixelhaus is the agency we wish we'd found sooner. Absolutely recommend."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">😄</div>
+        <div>
+          <div class="testi-name">Nina Kovac</div>
+          <div class="testi-role">CMO, Brandworks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <span class="section-tag">✦ Say Hello</span>
+      <h2 class="section-title">Let's start a<br>project together</h2>
+      <p>Ready to take your digital presence to the next level? Get in touch and let's build something remarkable.</p>
+      <div class="contact-info">
+        <div class="contact-row">
+          <span class="contact-icon">📧</span>
+          <span>hello@pixelhaus.studio</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">📞</span>
+          <span>+1 (800) 123-4567</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">📍</span>
+          <span>San Francisco, CA — Remote Worldwide</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="john@company.com">
+      </div>
+      <div class="form-group">
+        <label>Company</label>
+        <input type="text" placeholder="Your company name">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea rows="4" placeholder="Tell us about your project..."></textarea>
+      </div>
+      <button class="btn-submit">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="logo" style="color:var(--white)"><span>Pixel</span>haus</div>
+    <nav class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+    </nav>
+    <p class="footer-copy">© 2026 Pixelhaus. All rights reserved.</p>
+    <div class="footer-star"></div>
+  </div>
+</footer>
+
+<script>
+function toggleAcc(header) {
+  const item = header.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Subtle scroll-triggered fade for cards
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card, .testi-card, .team-card, .about-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
